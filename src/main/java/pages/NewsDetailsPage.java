@@ -3,46 +3,54 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import utils.BaseUtil;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
 
-import java.time.Duration;
-
-public class NewsDetailsPage extends BaseUtil {
+public class NewsDetailsPage {
     private WebDriver driver;
-    String browserTitle;
 
     // Elements locators
-    private By firstLatestNewsTitle = By.xpath("//*[@id=\"tc-main-content\"]/div[3]/div/div/div/article[1]");
-    private By firstLatestNewsTitleInDetailsPage = By.xpath("//*[@id=\"tc-main-content\"]/div[3]/div/div/div/article[1]/div[2]/div[2]/div[1]/header/div[1]/h1");
-    private By copyShareLink = By.xpath("//*[@id=\"tc-main-content\"]/div[3]/div/div/div/article[1]/div[2]/div[1]/div/a[6]");
-    private By linkCopiedText = By.xpath("//*[contains(text(), 'Link Copied')]");
-
+    private By firstArticleTitleInDetailsPageLocator = By.xpath("//*[@id=\"tc-main-content\"]/div[3]/div/div/div/article[1]/div[2]/div[2]/div[1]/header/div[1]/h1");
+    private By articleContentLocator = By.className("article-content");
 
     public NewsDetailsPage(WebDriver driver) {
         this.driver = driver;
     }
 
-    public String getFirstArticleTitle(){
-        WebElement articleTitle = driver.findElement(firstLatestNewsTitleInDetailsPage);
-        // System.out.println("article title " + articleTitle.getText());
+    public String getFirstArticleTitle() {
+        WebElement articleTitle = driver.findElement(firstArticleTitleInDetailsPageLocator);
+       // System.out.println("article title " + articleTitle.getText());
         return articleTitle.getText();
+       // return articleTitle.getText() +  " | TechCrunch";
     }
 
-    public String getBrowserTitle(){
-        WebElement firstArticle = driver.findElement(firstLatestNewsTitle);
-        firstArticle.click();
-        browserTitle = driver.getTitle();
-        //  System.out.println(browserTitle);
-        return browserTitle;
+    public String getBrowserTitle() {
+        // System.out.println(browserTitle);
+        return driver.getTitle();
     }
 
-    public void verifyCopyLinkButton(){
-        driver.findElement(firstLatestNewsTitle).click();
-        driver.findElement(copyShareLink).isDisplayed();
-        driver.findElement(copyShareLink).click();
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(linkCopiedText));
+    public Boolean verifyLinksWithinNewsContent() {
+        WebElement newsContent = driver.findElement(articleContentLocator);
+        List<WebElement> links = newsContent.findElements(By.tagName("a"));
+        for (WebElement link : links) {
+            String url = link.getAttribute("href");
+            if (!isValidURL(url)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isValidURL(String url) {
+        try {
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+           // connection.setRequestMethod("GET");
+            int responseCode = connection.getResponseCode();
+          // System.out.println(responseCode + " and  " + url);
+            return (200 == responseCode);
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

@@ -1,23 +1,19 @@
-package utils;
+package base;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-
 import java.time.Duration;
 
-public class BaseUtil {
+public class BaseTest {
     protected WebDriver driver;
     private String driverPath = "/usr/local/bin/chromedriver";
     private String driverName= "webdriver.chrome.driver";
 
-
     @BeforeClass
     public void setup() {
-        // Use WebDriverManager to handle ChromeDriver setup
-        //WebDriverManager.chromedriver().browserVersion("118.0.5993.88").setup();
         System.setProperty(driverName, driverPath);
 
         // Set up ChromeOptions to disable popups
@@ -27,7 +23,12 @@ public class BaseUtil {
         options.addArguments("--remote-allow-origins=*");
 
         // Use the ChromeOptions when creating the ChromeDriver instance
-        this.driver = new ChromeDriver(options);
+        driver = new ChromeDriver(options);
+
+        // Set up which page driver be set to
+        driver.get("https://techcrunch.com/");
+
+        // Set timeout for all tests
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
     }
 
@@ -35,9 +36,8 @@ public class BaseUtil {
     public void teardown() {
         // Close the WebDriver instance
         if (driver != null) {
+            //driver.close();
             driver.quit();
         }
     }
-
-
 }

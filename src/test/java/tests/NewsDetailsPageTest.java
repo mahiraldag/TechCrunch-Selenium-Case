@@ -3,28 +3,30 @@ package tests;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import pages.HomePage;
 import pages.NewsDetailsPage;
-import utils.BaseUtil;
+import base.BaseTest;
 
-public class NewsDetailsPageTest extends BaseUtil {
+public class NewsDetailsPageTest extends BaseTest {
     private NewsDetailsPage newsDetailsPage;
+    private HomePage homePage;
 
     @BeforeClass
     public void setUp() {
-        super.setup();
-        driver.get("https://techcrunch.com/");
         newsDetailsPage = new NewsDetailsPage(driver);
+        homePage = new HomePage(driver);
     }
 
     @Test
     public void verifyNewsTitleAndBrowserTitleAreSame() {
+        homePage.goToNewsDetails();
         Assert.assertTrue(newsDetailsPage.getBrowserTitle().contains(newsDetailsPage.getFirstArticleTitle()));
-        //  driver.navigate().back();
+        // Assert.assertEquals(newsDetailsPage.getBrowserTitle(), newsDetailsPage.getFirstArticleTitle());
     }
 
     @Test
-    public void verifyNewsHasLinksWithinContent() {
-        newsDetailsPage.verifyCopyLinkButton();
-        //  driver.navigate().back();
+    public void verifyLinksWithinNews() {
+        homePage.goToNewsDetails();
+        Assert.assertTrue(newsDetailsPage.verifyLinksWithinNewsContent());
     }
 }

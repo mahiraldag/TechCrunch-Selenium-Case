@@ -4,35 +4,23 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import pages.HomePage;
-import utils.BaseUtil;
+import base.BaseTest;
 
-import java.net.MalformedURLException;
-
-public class HomePageTest extends BaseUtil {
+public class HomePageTest extends BaseTest {
     private HomePage homePage;
 
     @BeforeClass
     public void setUp() {
-        super.setup();
-        driver.get("https://techcrunch.com/");
         homePage = new HomePage(driver);
     }
 
     @Test
-    public void verifyEachLatestNewsHasAuthor() throws MalformedURLException{
-      /*  System.out.println("toplam sayılar");
-        System.out.println(homePage.getNumberOfArticles());
-        System.out.println(homePage.getNumberAuthors());
-        System.out.println(homePage.getNumberOfImages()); */
-        Assert.assertEquals(homePage.getNumberOfArticles(), homePage.getNumberAuthors());
+    public void verifyEachLatestNewsHasAuthor(){
         Assert.assertTrue(homePage.eachNewsHasAuthor());
-
     }
 
     @Test
-    public void verifyEachLatestNewsHasImage() throws MalformedURLException{
-        Assert.assertEquals(homePage.getNumberOfArticles(), homePage.getNumberOfImages());
+    public void verifyEachLatestNewsHasImage(){
         Assert.assertTrue(homePage.eachNewsHasImage());
     }
-
 }
