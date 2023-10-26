@@ -25,14 +25,10 @@ public class HomePage extends BaseUtil {
     public int getNumberOfArticles() {
         WebElement section = driver.findElement(latestArticlesSection);
         List<WebElement> articles = section.findElements(latestArticles);
-        if (articles.size() > 20){
-            return 20;
-        }else{
-            return articles.size();
-        }
         /*for (WebElement article : articles) {
             System.out.println(articles.getText());
         }*/
+        return articles.size();
     }
 
     public int getNumberAuthors() {
