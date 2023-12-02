@@ -16,7 +16,7 @@ public class BaseTest {
         WebDriverManager.chromedriver().setup();
         // Set up ChromeOptions to disable popups
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("headless"); // This should be activated before pushing .yml file
+        options.addArguments("headless");  // This should be activated before pushing .yml file
         options.addArguments("--disable-popup-blocking");
         options.addArguments("--start-maximized");
         options.addArguments("--remote-allow-origins=*");
