@@ -1,5 +1,6 @@
 package base;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -9,15 +10,13 @@ import java.time.Duration;
 
 public class BaseTest {
     protected WebDriver driver;
-    private String driverPath = "/usr/local/bin/chromedriver";
-    private String driverName= "webdriver.chrome.driver";
 
     @BeforeClass
     public void setup() {
-        System.setProperty(driverName, driverPath);
-
+        WebDriverManager.chromedriver().setup();
         // Set up ChromeOptions to disable popups
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("headless"); // This should be activated before pushing .yml file
         options.addArguments("--disable-popup-blocking");
         options.addArguments("--start-maximized");
         options.addArguments("--remote-allow-origins=*");

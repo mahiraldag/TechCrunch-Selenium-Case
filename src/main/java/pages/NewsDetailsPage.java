@@ -47,7 +47,7 @@ public class NewsDetailsPage {
             HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
            // connection.setRequestMethod("GET");
             int responseCode = connection.getResponseCode();
-          // System.out.println(responseCode + " and  " + url);
+          // System.out.println(responseCode + " and " + url);
             return (200 == responseCode);
         } catch (Exception e) {
             return false;
